@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.html {
+    text-align: center;
+  }
+  
+  .logo {
+    height: 50vmin;
+    pointer-events: none;
+  }
+
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    width: 100vw;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .gamescreen{
+    display: grid;
+    width: 100%;
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: 2fr 1fr; /* The first column takes 2/3 of the grid space, the second column takes 1/3 */
+    grid-auto-flow: dense;
+    grid-gap: 10px;
+    justify-items: center;
+  }
+  
+  .game {
+/*     display: flex;
+    flex-direction: row;
+    align-items: center; */
+    max-width: 360px;
+    height: 360px;
+  }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    grid-column: span 2;
+  }
+  .grid div {
+    width: 5%;
+    height: 5%;
+    box-sizing: border-box;
+    border: solid 1px red;
+  }
+  .invader {
+    background-color: purple;
+    border-radius: 10px;
+  }
+  .shooter {
+    background-color: green;
+  }
+  .laser {
+    background-color: orange;
+  }
+  .boom {
+    background-color: red;
+  }
+  .score{
+    color:red;
+    grid-column: span 1;
+  }
+  
+  
+  
+  
