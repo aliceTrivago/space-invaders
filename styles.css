@@ -38,20 +38,1017 @@
     }
   }
 
-  .gamescreen{
+  .grid-container {
     display: grid;
-    width: 100%;
-    grid-template-rows: repeat(1, 1fr);
-    grid-template-columns: 2fr 1fr; /* The first column takes 2/3 of the grid space, the second column takes 1/3 */
-    grid-auto-flow: dense;
-    grid-gap: 10px;
-    justify-items: center;
+    width: calc(var(--columns) * var(--cell-size));
+    grid-template-columns: repeat(var(--columns), var(--cell-size));
   }
   
+  .cell {
+    height: var(--cell-size);
+  }
+  
+  .cell--color-1 {
+    background-color: var(--blue);
+  }
+  
+  .cell--color-2 {
+    background-color: var(--orange);
+  }
+  
+  .cell--color-3 {
+    background-color: var(--red);
+  }
+  
+  .counter {
+    display: flex;
+    justify-content: space-between;
+    color: var(--white);
+    width: 100%;
+    flex-wrap: wrap;
+    font-family: monospace;
+    font-size: 14px;
+    padding: var(--abs-20);
+    margin-top: calc(-1 * var(--abs-36));
+  }
+  
+  .counter p {
+    user-select: none;
+    display: flex;
+  }
+  
+  .counter span {
+    width: var(--abs-36);
+    padding-left: var(--abs-8);
+  }
+  
+  .arcade {
+    height: 1000px;
+    width: 1000px;
+    position: relative;
+    margin: auto;
+    perspective: 35em;
+  
+    --columns: 104;
+    --cell-size: 4.5px;
+    --texture-img: url("data:image/png;base64,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");
+  }
+  
+  .box {
+    height: var(--rel-15);
+    width: var(--rel-70);
+    position: absolute;
+    top: var(--rel-0);
+    left: var(--rel-15);
+    z-index: 3;
+    background-color: var(--grey-700);
+    background-image: var(--texture-img), url(/logo.default.svg);
+    box-shadow: 1px 16px 32px var(--black-a50);
+    background-size: auto, var(--rel-33);
+    background-repeat: repeat, no-repeat;
+    background-position: center;
+  }
+  
+  .box.in-background {
+    top: auto;
+    bottom: -20%;
+    z-index: -1;
+    height: var(--rel-40);
+  }
+  
+  .box:before,
+  .box:after {
+    height: 104%;
+    width: var(--rel-05);
+    position: absolute;
+    top: -2%;
+    content: "";
+    background: var(--orange) var(--texture-img);
+    border-radius: var(--rel-05);
+  }
+  
+  .in-background:before,
+  .in-background:after {
+    height: 102%;
+    border-radius: var(--rel-0);
+  }
+  
+  .box:before {
+    left: calc(-1 * var(--rel-05));
+    box-shadow: 1px var(--abs-0) var(--abs-4) var(--black);
+  }
+  
+  .box:after {
+    right: calc(-1 * var(--rel-05));
+    box-shadow: -1px var(--abs-0) var(--abs-4) var(--black);
+  }
+  
+  .container {
+    height: 50%;
+    width: 62%;
+    position: absolute;
+    top: 15%;
+    left: 19%;
+    background: grey var(--texture-img);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .container:before,
+  .container:after {
+    background: var(--orange) var(--texture-img);
+    height: calc(var(--rel-100) + var(--rel-02));
+    width: var(--rel-05);
+    position: absolute;
+    top: calc(-1 * var(--rel-02));
+    content: "";
+    z-index: 2;
+    box-shadow: 0 -2px 4px var(--black);
+  }
+  
+  .container:before {
+    left: calc(-1 * var(--rel-05));
+  }
+  
+  .container:after {
+    right: calc(-1 * var(--rel-05));
+  }
+  
+  .handle {
+    height: 6%;
+    width: var(--rel-05);
+    background: #0f90c9;
+    position: absolute;
+    top: 92%;
+    right: 8%;
+    border-radius: 50%;
+    z-index: 3;
+  }
+  
+  .handle:before {
+    height: var(--rel-100);
+    width: var(--rel-100);
+    position: absolute;
+    top: var(--rel-0);
+    border: var(--rel-0);
+    left: var(--rel-0);
+    content: "";
+    border-radius: var(--rel-50);
+    background-color: var(--red);
+    box-shadow: inset 0 8px 0 var(--red), inset 0 -8px 4px var(--red-900),
+      0 0 4px var(--red-900), inset 0 24px 32px var(--red-900),
+      0 6px 2px var(--black-a90);
+  }
+  
+  .stick {
+    height: calc(2 * var(--rel-100));
+    width: var(--rel-40);
+    position: absolute;
+    top: var(--rel-100);
+    left: var(--rel-30);
+  }
+  
+  .stick,
+  .stick::before {
+    content: "";
+    background-image: linear-gradient(
+      to left,
+      var(--grey-500) var(--rel-0),
+      var(--white) var(--rel-80),
+      var(--grey-500) var(--rel-100)
+    );
+    border: var(--abs-1) solid var(--grey-700);
+  }
+  
+  .stick:before {
+    height: var(--rel-100);
+    width: calc(var(--rel-100) + var(--rel-50));
+    transform: rotate(90deg);
+    position: absolute;
+    top: var(--rel-50);
+    left: calc(-1 * var(--rel-20));
+  }
+  
+  .board {
+    height: var(--rel-15);
+    width: 69.7%;
+    position: absolute;
+    top: 60.9%;
+    left: 15.2%;
+    background: var(--blue) var(--texture-img);
+    transform: rotateX(78deg);
+  }
+  
+  .board:before,
+  .board:after {
+    height: var(--rel-100);
+    width: var(--rel-05);
+    position: absolute;
+    top: var(--rel-0);
+    background: var(--orange) var(--texture-img);
+    content: "";
+    z-index: 2;
+  }
+  
+  .board:before {
+    box-shadow: 2px 2px 4px var(--black-a50);
+    left: calc(-1 * var(--rel-05));
+  }
+  .board:after {
+    box-shadow: -2px 2px 4px var(--black-a50);
+    right: calc(-1 * var(--rel-05));
+  }
+  
+  .button {
+    cursor: pointer;
+    height: 15%;
+    width: 6%;
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    border-radius: 50%;
+    border: 0;
+    background-color: red;
+  
+    box-shadow: inset 0 8px 0 #da2e0b, inset 0 -8px 4px #aa2409, 0 0 4px #c2290a,
+      inset 0 24px 32px #aa2409, 0 6px 2px rgba(0, 0, 0, 0.9);
+  }
+  
+  .button {
+    color: #382b22;
+    text-transform: uppercase;
+    width: 10%;
+    height: 20%;
+    border-radius: var(--rel-50);
+    transform-style: preserve-3d;
+    transition: transform 50ms cubic-bezier(0, 0, 0.58, 1),
+      background 50ms cubic-bezier(0, 0, 0.58, 1);
+  
+    -webkit-background-clip: text;
+    text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .button-meta {
+    background-color: var(--white);
+    box-shadow: inset 0 8px 0 #d2cac7, inset 0 -8px 4px #9f9c9c, 0 0 4px #cebab6,
+      inset 0 24px 32px #b7aaa7, 0 6px 2px rgba(0, 0, 0, 0.9);
+  }
+  
+  .button.button-meta::before {
+    background: #6c6969;
+  }
+  
+  .button::before {
+    position: absolute;
+    content: "";
+    width: var(--rel-100);
+    height: var(--rel-100);
+    inset: var(--abs-0);
+    background: #5b1328;
+    border-radius: inherit;
+    box-shadow: 0 0 2px var(--black-a50);
+    transform: translate3d(0, 0.75em, -1em);
+    transition: transform 50ms cubic-bezier(0, 0, 0.58, 1),
+      box-shadow 50ms cubic-bezier(0, 0, 0.58, 1);
+  }
+  
+  .button:active {
+    background: #da2323;
+    transform: translate(0, 0.25em);
+  }
+  
+  .button:active::before {
+    box-shadow: 0 0 2px var(--black-a50);
+    transform: translate3d(0, 0.5em, -0.5em);
+  }
+  
+  .button:hover {
+    outline: solid 1px var(--red);
+  }
+  
+  .button-a {
+    left: 34%;
+    top: 55%;
+  }
+  
+  .button-b {
+    left: 49%;
+    top: 55%;
+  }
+  
+  .button-c {
+    left: 64%;
+    top: 55%;
+  }
+  
+  .button-start,
+  .button-select {
+    top: var(--rel-15);
+  }
+  
+  .button-start {
+    left: var(--rel-05);
+  }
+  
+  .button-select {
+    left: var(--rel-20);
+  }
+  
+  .bottom {
+    height: var(--rel-10);
+    width: 80.2%;
+    position: absolute;
+    top: 73%;
+    box-shadow: 0 0 var(--abs-4) var(--black);
+    background: var(--orange) var(--texture-img);
+    left: var(--rel-10);
+  }
+  
+  .bottom:before,
+  .bottom:after {
+    height: 104%;
+    width: var(--rel-05);
+    position: absolute;
+    top: calc(-1 * var(--rel-02));
+    background: var(--orange) var(--texture-img);
+    content: "";
+    z-index: 2;
+    box-shadow: 0 var(--abs-4) var(--abs-4) var(--black-a50);
+    border-radius: var(--rel-05);
+  }
+  
+  .bottom:before {
+    left: calc(-1 * var(--rel-05));
+  }
+  
+  .bottom:after {
+    right: calc(-1 * var(--rel-05));
+  }
+  
+  .background {
+    position: fixed;
+    inset: var(--abs-0);
+  
+    --size: 46px;
+    background-color: var(--white);
+  
+    background-image: linear-gradient(
+        335deg,
+        var(--red-800) var(--size),
+        transparent var(--size)
+      ),
+      linear-gradient(155deg, var(--red-900) var(--size), transparent var(--size)),
+      linear-gradient(335deg, var(--red-800) var(--size), transparent var(--size)),
+      linear-gradient(155deg, var(--red-900) var(--size), transparent var(--size));
+    background-size: 116px 116px;
+    background-position: 0 4px, 8px 70px, 58px 62px, 64px 12px;
+    filter: brightness(60%);
+  }
+  
+  .background::after {
+    content: "";
+    position: fixed;
+    inset: var(--abs-0);
+    background-image: linear-gradient(180deg, var(--black), var(--transparent));
+    backdrop-filter: blur(var(--abs-1));
+  }
+  
+  .screen {
+    position: relative;
+    height: var(--rel-80);
+    width: var(--rel-85);
+  
+    --screen-radius-v: var(--rel-02) / var(--rel-50);
+    --screen-radius-h: var(--rel-50) / var(--rel-02);
+  }
+  
+  .screen canvas {
+    width: var(--rel-100);
+  }
+  
+  .screen::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    inset: var(--abs-0);
+    background-color: var(--white-a25);
+    border-radius: var(--screen-radius-v);
+    filter: blur(var(--abs-28));
+    z-index: 5;
+    animation: screen var(--duration-800) infinite linear;
+  }
+  
+  .frame {
+    position: relative;
+    display: inline-block;
+    padding: var(--abs-20);
+    border-radius: var(--abs-8);
+    background-color: var(--grey-800);
+    width: var(--rel-100);
+    height: var(--rel-100);
+  }
+  
+  .frame::before,
+  .frame::after {
+    content: "";
+    position: absolute;
+    inset: var(--rel-0);
+  }
+  
+  .frame::before {
+    border-radius: var(--abs-8);
+    border-style: solid;
+    border-width: var(--abs-80) var(--abs-100);
+    border-color: var(--black-a50) var(--black-a25) var(--transparent)
+      var(--black-a25);
+    z-index: 1;
+  }
+  
+  .frame::after {
+    background: radial-gradient(
+        var(--black-a75) var(--rel-50),
+        var(--transparent) var(--rel-100)
+      ),
+      linear-gradient(var(--black-a15) var(--rel-10), var(--transparent));
+    z-index: 2;
+  }
+  
+  .noise {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--rel-02) / var(--rel-50);
+    z-index: 3;
+    width: var(--rel-100);
+    height: var(--rel-100);
+  }
+  
+  .effect {
+    position: absolute;
+    overflow: hidden;
+    inset: var(--abs-0);
+    border-radius: var(--screen-radius-h);
+    background: var(--grey-900);
+    background-size: var(--rel-80);
+    animation: noise 200ms infinite linear;
+  }
+  
+  .effect::before,
+  .effect::after {
+    content: "";
+    position: absolute;
+    width: var(--rel-100);
+    border-radius: var(--screen-radius-h);
+    pointer-events: none;
+    z-index: 4;
+  }
+  
+  .effect::before {
+    height: var(--rel-20);
+    background-color: var(--white-a10);
+    animation: _noise-effect_1qzsq_1 4s infinite linear;
+    opacity: var(--alpha-25);
+  }
+  
+  .effect::after {
+    height: var(--rel-100);
+    background: radial-gradient(
+        var(--transparent) var(--rel-50),
+        var(--black-a25)
+      ),
+      linear-gradient(var(--white-a25) var(--rel-10), var(--transparent));
+  }
+  
+  .content {
+    position: absolute;
+    inset: var(--abs-0);
+    border-radius: var(--screen-radius-h);
+    filter: brightness(1.2) contrast(1.5);
+    background-color: var(--black);
+  }
+  
+  .content::after {
+    content: "";
+    position: absolute;
+    inset: var(--abs-0);
+    background: repeating-linear-gradient(
+      var(--abs-0),
+      var(--white),
+      var(--white) var(--abs-1),
+      var(--transparent) var(--abs-2)
+    );
+    opacity: var(--alpha-15);
+    border-radius: var(--screen-radius-h);
+    pointer-events: none;
+  }
+  
+  @keyframes noise {
+    0% {
+      background-position: 0 1000px;
+    }
+  
+    50% {
+      background-position: -1000px;
+    }
+  
+    100% {
+      background-position: 100px 0;
+    }
+  }
+  
+  @keyframes _noise-effect_1qzsq_1 {
+    0% {
+      top: calc(-1 * var(--rel-10));
+      opacity: var(--alpha-0);
+    }
+  
+    20% {
+      opacity: var(--alpha-0);
+    }
+  
+    50% {
+      opacity: var(--alpha-75);
+    }
+  
+    80% {
+      opacity: var(--alpha-0);
+    }
+  
+    100% {
+      top: var(--rel-100);
+      opacity: var(--alpha-0);
+    }
+  }
+  
+  @keyframes screen {
+    0% {
+      transform: scale(1.01);
+    }
+  
+    50% {
+      transform: scale(1);
+    }
+  
+    100% {
+      transform: scale(1.01);
+    }
+  }
+  
+  /**
+   * CSS Variables for opacity levels.
+   *
+   * @description
+   * Here we declare CSS variables for opacity levels to use throughout our styles.
+   * We can use these variables to standardize opacity across all elements.
+   * They are used to create a uniform look and feel, increase maintainability and reduce redundancy.
+   */
+  :root {
+    /* Represents an opacity level of 0%, fully transparent. */
+    --alpha-0: 0;
+  
+    /* Represents an opacity level of 15%. */
+    --alpha-15: 0.15;
+  
+    /* Represents an opacity level of 25%. */
+    --alpha-25: 0.25;
+  
+    /* Represents an opacity level of 50%, semi-transparent. */
+    --alpha-50: 0.5;
+  
+    /* Represents an opacity level of 75%. */
+    --alpha-75: 0.75;
+  
+    /* Represents an opacity level of 90%. */
+    --alpha-90: 0.9;
+  
+    /* Represents an opacity level of 100%, fully opaque. */
+    --alpha-100: 1;
+  }
+  
+  /**
+   * Color Definitions
+   *
+   * This block defines CSS custom properties (variables) for a standardized color palette to be used throughout the application.
+   * This ensures consistent colors and makes it easier to manage and update the color scheme.
+   *
+   * Each color has multiple shades, defined as 100 (lightest) through 900 (darkest).
+   * This provides flexibility in design while maintaining color coherence.
+   *
+   * Each color variable is named with the format `--[color]-[shade]`.
+   *
+   * Note: If a particular shade for a color isn't defined, it is recommended to use the nearest available shade.
+   */
+  :root {
+    /* Color: transparent */
+    --transparent: transparent;
+  
+    /* Color: black */
+    --black: #000;
+    /* Alpha values for black */
+    --black-a10: color-mix(in srgb, var(--black) 10%, var(--transparent));
+    --black-a15: color-mix(in srgb, var(--black) 15%, var(--transparent));
+    --black-a25: color-mix(in srgb, var(--black) 25%, var(--transparent));
+    --black-a50: color-mix(in srgb, var(--black) 50%, var(--transparent));
+    --black-a75: color-mix(in srgb, var(--black) 75%, var(--transparent));
+    --black-a90: color-mix(in srgb, var(--black) 90%, var(--transparent));
+  
+    /* Color: white */
+    --white: #fff;
+    /* Alpha values for white */
+    --white-a10: color-mix(in srgb, var(--white) 10%, var(--transparent));
+    --white-a15: color-mix(in srgb, var(--white) 15%, var(--transparent));
+    --white-a25: color-mix(in srgb, var(--white) 25%, var(--transparent));
+    --white-a50: color-mix(in srgb, var(--white) 50%, var(--transparent));
+    --white-a75: color-mix(in srgb, var(--white) 75%, var(--transparent));
+    --white-a90: color-mix(in srgb, var(--white) 90%, var(--transparent));
+  
+    /* Color: blue */
+    --blue: #007fac;
+    --blue-100: #f3f9fd;
+    --blue-200: #e7f4fa;
+    --blue-300: #c4e3f4;
+    --blue-500: #89c8e8;
+    --blue-700: #1391d2;
+    --blue-800: var(--blue);
+    --blue-900: #005fa3;
+  
+    /* Color: orange */
+    --orange: #f48f01;
+    --orange-100: #fffaf3;
+    --orange-200: #fef5e7;
+    --orange-300: #fee7c4;
+    --orange-500: #fdce8a;
+    --orange-700: #fc9e15;
+    --orange-800: var(--orange);
+  
+    /* Color: red */
+    --red: #db3734;
+    --red-100: #fff9f8;
+    --red-200: #fff2f2;
+    --red-300: #ffe0df;
+    --red-500: #ffc1c0;
+    --red-700: #ff8381;
+    --red-800: var(--red);
+    --red-900: #b30018;
+  
+    /* Color: green */
+    --green: #028000;
+    --green-100: #f1f8ea;
+    --green-200: #e9f4de;
+    --green-300: #cce5b2;
+    --green-500: #9c6;
+    --green-700: #62a30f;
+    --green-800: var(--green);
+    --green-900: #005f00;
+  
+    /* Color: grey */
+    --grey-100: #f9fafa;
+    --grey-200: #f3f4f5;
+    --grey-300: #dbdde1;
+    --grey-500: #afb3bc;
+    --grey-700: #6c707a;
+    --grey-800: #3b3b3b;
+    --grey-900: #0a1121;
+  }
+  
+  /**
+   * CSS Variables for animation durations.
+   *
+   * @description
+   * Here we declare CSS variables for animation durations to use throughout our styles.
+   * We can use these variables to standardize timing of animations across all elements.
+   * They are used to create a uniform look and feel, increase maintainability, and reduce redundancy.
+   */
+  :root {
+    /* Represents an animation duration of 0.1s. */
+    --duration-10: 0.1s;
+  
+    /* Represents an animation duration of 0.15s. */
+    --duration-15: 0.15s;
+  
+    /* Represents an animation duration of 0.2s. */
+    --duration-20: 0.2s;
+  
+    /* Represents an animation duration of 0.5s. */
+    --duration-50: 0.5s;
+  
+    /* Represents an animation duration of 1s. */
+    --duration-100: 1s;
+  
+    /* Represents an animation duration of 2s. */
+    --duration-200: 2s;
+  
+    /* Represents an animation duration of 4s. */
+    --duration-400: 4s;
+  
+    /* Represents an animation duration of 8s. */
+    --duration-800: 8s;
+  }
+  
+  /**
+   * Screen sizes
+  
+   * TBD:
+   * - native css variables can not be used in media queries
+   * - consider using only css container queries
+   */
+  :root {
+    /* Minimum screen size: 320px */
+    --screen-320: 320px;
+  
+    /* Screen size: 360px */
+    --screen-360: 360px;
+  
+    /* Screen size: 412px */
+    --screen-412: 412px;
+  
+    /* Screen size: 480px */
+    --screen-480: 480px;
+  
+    /* Screen size: 600px */
+    --screen-600: 600px;
+  
+    /* Screen size: 720px */
+    --screen-720: 720px;
+  
+    /* Screen size: 768px */
+    --screen-768: 768px;
+  
+    /* Screen size: 880px */
+    --screen-880: 880px;
+  
+    /* Screen size: 980px */
+    --screen-980: 980px;
+  
+    /* Screen size: 1280px */
+    --screen-1280: 1280px;
+  
+    /* Screen size: 1600px */
+    --screen-1600: 1600px;
+  }
+  
+  /**
+   * Absolute Sizing in REM Units, Named by Pixel Equivalents
+   *
+   * This block defines CSS custom properties (variables) for standardizing sizes and spacings across the application.
+   * The sizes are named according to their pixel equivalents at default browser settings (1rem = 16px) for easy understanding.
+   * However, the actual values are specified in 'rem' units to provide scalability and maintain accessibility.
+   *
+   * Each size/spacing variable is named with the format `--abs-[pixel equivalent]`.
+   *
+   * Note: Variable `--abs-0` denotes no size or spacing, while `--abs-1` provides minimal size or spacing equivalent to 1px.
+   * These two variables are not specified in 'rem' units.
+   */
+  :root {
+    /* Absolute size/spacing: 0 (0px) - No size or spacing */
+    --abs-0: 0;
+  
+    /* Absolute size/spacing: 1px (1px) - Minimal size or spacing, equivalent to 1px */
+    --abs-1: 1px;
+  
+    /**
+       * Sizes or spacings below are defined in 'rem' units for scalability and accessibility,
+       * but named by their pixel equivalents at default browser settings for easy reference
+       */
+  
+    /* Absolute size/spacing: 0.2rem (2px) */
+    --abs-2: 0.2rem;
+  
+    /* Absolute size/spacing: 0.4rem (4px) */
+    --abs-4: 0.4rem;
+  
+    /* Absolute size/spacing: 0.8rem (8px) */
+    --abs-8: 0.8rem;
+  
+    /* Absolute size/spacing: 1.2rem (12px) */
+    --abs-12: 1.2rem;
+  
+    /* Absolute size/spacing: 1.6rem (16px) */
+    --abs-16: 1.6rem;
+  
+    /* Absolute size/spacing: 2rem (20px) */
+    --abs-20: 2rem;
+  
+    /* Absolute size/spacing: 2.4rem (24px) */
+    --abs-24: 2.4rem;
+  
+    /* Absolute size/spacing: 2.8rem (28px) */
+    --abs-28: 2.8rem;
+  
+    /* Absolute size/spacing: 3.2rem (32px) */
+    --abs-32: 3.2rem;
+  
+    /* Absolute size/spacing: 3.6rem (36px) */
+    --abs-36: 3.6rem;
+  
+    /* Absolute size/spacing: 4rem (40px) */
+    --abs-40: 4rem;
+  
+    /* Absolute size/spacing: 4.4rem (44px) */
+    --abs-44: 4.4rem;
+  
+    /* Absolute size/spacing: 4.8rem (48px) */
+    --abs-48: 4.8rem;
+  
+    /* Absolute size/spacing: 5.2rem (52px) */
+    --abs-52: 5.2rem;
+  
+    /* Absolute size/spacing: 5.6rem (56px) */
+    --abs-56: 5.6rem;
+  
+    /* Absolute size/spacing: 6rem (60px) */
+    --abs-60: 6rem;
+  
+    /* Absolute size/spacing: 6.4rem (64px) */
+    --abs-64: 6.4rem;
+  
+    /* Absolute size/spacing: 8rem (80px) */
+    --abs-80: 8rem;
+  
+    /* Absolute size/spacing: 10rem (100px) */
+    --abs-100: 10rem;
+  
+    /* Absolute size/spacing: 11.6rem (116px) */
+    --abs-116: 11.6rem;
+  
+    /* Absolute size/spacing: 12.8rem (128px) */
+    --abs-128: 12.8rem;
+  
+    /* Absolute size/spacing: 19.2rem (192px) */
+    --abs-192: 19.2rem;
+  
+    /* Absolute size/spacing: 25.6rem (256px) */
+    --abs-256: 25.6rem;
+  }
+  
+  /**
+   * Relative sizing, naming in percentage
+   *
+   * Each variable, from "--rel-0" to "--rel-100", represents a different percentage of a parent container's size,
+   * enabling relative sizing across your stylesheets.
+   *
+   * These variables can be used anywhere in our styles where a percentage might be needed,
+   * providing a consistent method for defining relative sizes.
+   *
+   * Sizing grid:
+   * 1/1 => 100%
+   * 1/2 => 50%
+   * 1/3 => 33.333333%, 66.666667%, 100%
+   * 1/4 => 25%, 50%, 75%, 100%
+   * 1/5 => 20%, 40%, 60%, 80%, 100%
+   * 1/10 => 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100%
+   * 1/20 => 5%, 10%, 15%, 20%, 25%, 30%, 35%, 40%, 45%, 50%, 55%, 60%, 65%, 70%, 75%, 80%, 85%, 90%, 95%, 100%
+   */
+  :root {
+    /* Represents 0% of the parent container's size */
+    --rel-0: 0;
+  
+    /* Represents 2% of the parent container's size */
+    --rel-02: 2%;
+  
+    /* Represents 5% of the parent container's size */
+    --rel-05: 5%;
+  
+    /* Represents 10% of the parent container's size */
+    --rel-10: 10%;
+  
+    /* Represents 15% of the parent container's size */
+    --rel-15: 15%;
+  
+    /* Represents 20% of the parent container's size */
+    --rel-20: 20%;
+  
+    /* Represents 25% of the parent container's size */
+    --rel-25: 25%;
+  
+    /* Represents 30% of the parent container's size */
+    --rel-30: 30%;
+  
+    /* Represents roughly 33.33% of the parent container's size */
+    --rel-33: 33.333333%;
+  
+    /* Represents 35% of the parent container's size */
+    --rel-35: 35%;
+  
+    /* Represents 40% of the parent container's size */
+    --rel-40: 40%;
+  
+    /* Represents 45% of the parent container's size */
+    --rel-45: 45%;
+  
+    /* Represents 50% (half) of the parent container's size */
+    --rel-50: 50%;
+  
+    /* Represents 55% of the parent container's size */
+    --rel-55: 55%;
+  
+    /* Represents 60% of the parent container's size */
+    --rel-60: 60%;
+  
+    /* Represents 65% of the parent container's size */
+    --rel-65: 65%;
+  
+    /* Represents roughly 66.67% of the parent container's size */
+    --rel-66: 66.666667%;
+  
+    /* Represents 70% of the parent container's size */
+    --rel-70: 70%;
+  
+    /* Represents 75% of the parent container's size */
+    --rel-75: 75%;
+  
+    /* Represents 80% of the parent container's size */
+    --rel-80: 80%;
+  
+    /* Represents 85% of the parent container's size */
+    --rel-85: 85%;
+  
+    /* Represents 90% of the parent container's size */
+    --rel-90: 90%;
+  
+    /* Represents 95% of the parent container's size */
+    --rel-95: 95%;
+  
+    /* Represents 100% (full) of the parent container's size */
+    --rel-100: 100%;
+  }
+  
+  /**
+   * Global CSS Styles and Variables
+   *
+   * This block defines CSS styles and custom properties applicable to the entire application.
+   */
+  
+  /**
+   * Applies the color scheme for the entire document.
+   * It enables both light and dark color modes, allowing the browser to pick
+   * the color scheme according to the user's preferences or system settings.
+   */
+  :root {
+    color-scheme: light;
+  }
+  
+  /**
+   * Box-sizing:
+   * The 'box-sizing: border-box' rule is applied to all elements (including pseudo-elements) to include padding and border
+   * in an element's total width and height.
+   */
+  html {
+    box-sizing: border-box;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  
+  /**
+   * Viewport Overflow:
+   * The 'max-width: 100vw' and 'overflow-x: hidden' rules for the html and body elements prevent horizontal scrolling
+   * caused by elements overflowing the viewport width.
+   */
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  /**
+   * Font Size: 62.5% of the default font size (16px) is set as the root font size for the HTML document.
+   */
+  html {
+    font-size: 62.5%;
+  }
+  
+  /**
+   * Defines the base typography and layout settings for the body element of the document.
+   */
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+      sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    font-size: var(--abs-16);
+    -webkit-tap-highlight-color: transparent;
+    min-width: var(--screen-320);
+    padding: 0;
+  }
+  
+  :focus {
+    outline: var(--abs-2) dotted var(--white);
+    outline-offset: var(--abs-2);
+  }
+  
+  /**
+   * Game starts
+  */
   .game {
-/*     display: flex;
-    flex-direction: row;
-    align-items: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 360px;
     height: 360px;
   }
@@ -60,7 +1057,7 @@
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    grid-column: span 2;
+    border: solid 1px black;
   }
   .grid div {
     width: 5%;
@@ -81,11 +1078,23 @@
   .boom {
     background-color: red;
   }
-  .score{
-    color:red;
-    grid-column: span 1;
+  .gamescreen {
+    display: grid;
+    width: 100%;
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: 2fr 1fr;
+    grid-auto-flow: dense;
+    grid-gap: 5px;
+    justify-items: center;
+  }
+  .score {
+    color: red;
+  }
+  .message {
+    color: red;
   }
   
-  
-  
+  /**
+   * Game ends
+  */
   

@@ -3,17 +3,19 @@ function getRandomInt(min, max) {
   }
   
   const grid = document.querySelector(".grid");
-  const result = document.querySelector(".results");
+  const message = document.querySelector(".message");
   const score = document.querySelector(".score");
+  const leftButton = document.querySelector("#left");
+  const rightButton = document.querySelector("#right");
+  const shootButton = document.querySelector("#shoot");
+  const resetButton = document.querySelector("#reset");
   const width = 20;
   let points = 0;
   let shooterIndex = 390;
   let squares = [];
-  
   let invaders = Array.from({ length: 20 }, (_, i) => i + 1).map((i) =>
     getRandomInt(1, 300)
   );
-  
   let isGoingRight = true;
   let direction = 1;
   let invadersRemoved = [];
@@ -24,12 +26,14 @@ function getRandomInt(min, max) {
   let drawId = null;
   
   function resetGame(e) {
-    if (e.key == "R" || e.key == "r") {
+    if (e.key == "R" || e.key == "r" || e.target.id === "reset") {
+      message.textContent = "";
       if (laserId != null) {
         clearInterval(laserId);
       }
       clearInterval(drawId);
       clearInterval(moveId);
+      clearInterval(laserId);
       removeEventListener("keydown", moveShooter);
       removeEventListener("keydown", shoot);
       removeEventListener("keydown", resetGame);
@@ -38,8 +42,8 @@ function getRandomInt(min, max) {
       removeLaser();
       points = 0;
       updatePoints();
-      shooterIndex = 220;
-      invaders = [1, 2, 3, 4, 5, 16, 17, 18, 19, 20];
+      shooterIndex = 390;
+      invaders = Array.from({ length: 30 }, (_, index) => getRandomInt(1, 300));
       isGoingRight = true;
       direction = 1;
       invadersRemoved = [];
@@ -68,7 +72,9 @@ function getRandomInt(min, max) {
   function drawInvaders() {
     for (let i = 0; i < invaders.length; i++) {
       if (!invadersRemoved.includes(invaders[i])) {
-        squares[invaders[i]].classList.add("invader");
+        if (invaders[i] < width * width - 1) {
+          squares[invaders[i]].classList.add("invader");
+        }
       }
     }
   }
@@ -81,8 +87,12 @@ function getRandomInt(min, max) {
   }
   
   function removeInvaders() {
-    for (let i = 0; i < invaders.length; i++) {
-      squares[invaders[i]].classList.remove("invader");
+    if (invaders.length > 0) {
+      for (let i = 0; i < invaders.length; i++) {
+        if (invaders[i] < width * width - 1) {
+          squares[invaders[i]].classList.remove("invader");
+        }
+      }
     }
   }
   
@@ -116,7 +126,24 @@ function getRandomInt(min, max) {
     }
   }
   
+  function moveShooterLeft() {
+    squares[shooterIndex].classList.remove("shooter");
+    if (shooterIndex % width !== 0) {
+      shooterIndex -= 1;
+    }
+  }
+  
+  function moveShooterRight() {
+    squares[shooterIndex].classList.remove("shooter");
+    if (shooterIndex % width < width - 1) {
+      if (shooterIndex % width < width - 1) {
+        shooterIndex += 1;
+      }
+    }
+  }
+  
   function moveInvaders() {
+    checkGameOver();
     const leftEdge = invaders[0] % width === 0;
     const rightEdge = invaders[invaders.length - 1] % width === width - 1;
     removeInvaders();
@@ -148,6 +175,23 @@ function getRandomInt(min, max) {
     score.textContent = points;
   }
   
+  function checkGameOver() {
+    if (invadersRemoved.length === invaders.length) {
+      showGameOver();
+    }
+    const squareInvaderShooter = document.querySelector(".invader.shooter");
+    if (squareInvaderShooter) {
+      showGameOver();
+    }
+  }
+  
+  function showGameOver() {
+    clearInterval(moveId);
+    document.removeEventListener("keydown", shoot);
+    score.textContent = `GAME OVER \n Score: ${points}`;
+    message.textContent = "Press R to restart Game";
+  }
+  
   const checkForHit = () => {
     if (squares[laserIndex].classList.contains("invader")) {
       squares[laserIndex].classList.remove("laser");
@@ -158,21 +202,20 @@ function getRandomInt(min, max) {
       clearInterval(laserId);
       points += 1;
       updatePoints();
-      removeLaser();
     }
   };
   
   function moveLaser() {
-    if (laserIndex >= 0) {
+    if (laserIndex >= 0 && squares[laserIndex]) {
       squares[laserIndex].classList.remove("laser");
       laserIndex -= width;
-      removeLaser();
       drawLaser();
     }
   }
   
   function shoot(e) {
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" || e.target.id === "shoot") {
+      removeLaser();
       e.preventDefault();
       laserIndex = shooterIndex - width;
       drawLaser();
@@ -192,6 +235,14 @@ function getRandomInt(min, max) {
     drawId = setInterval(draw, 10);
   }
   
+  function activateArcadeButtons() {
+    leftButton.addEventListener("click", moveShooterLeft);
+    rightButton.addEventListener("click", moveShooterRight);
+    shootButton.addEventListener("click", shoot);
+    resetButton.addEventListener("click", resetGame);
+  }
+  
+  activateArcadeButtons();
   createGrid();
   start();
   
